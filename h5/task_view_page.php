@@ -6,14 +6,15 @@ require_once '../common/page.php';
 $task = param('task');
 ?>
 <div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+            class="sr-only">Close</span></button>
 </div>
 <div class="modal-body">
-	<div class="task-detail" id="taskDetail">
-	</div>
+    <div class="task-detail" id="taskDetail">
+    </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 </div>
 
 <script type="text/javascript" src="../static/js/common/common.js"></script>
@@ -103,26 +104,29 @@ $task = param('task');
     {{/if}}
     <div class="row border-bottom" style="background-color: #f8f8f8; height: 20px;">
     </div>
+
 </script>
 
 <script type="text/javascript">
-   var taskId = '<?php echo $task;?>';
-   $.ajax({
-       url:'../action/get_task.php?id='+taskId, //后台处理程序
-       type:'GET',         //数据发送方式
-       dataType:'json',     //接受数据格式
-       success:function(data) {
-          if (data && data.task) {
-              $("#taskDetail").append(
-                  $("#taskDetailTemplate").render({
-			data: data.task},
-			{dateFormat: function(m) {
-			  return moment(m).format('MM-DD HH:mm') 
-			}
-		  })
-               )
-          }
+    var taskId = '<?php echo $task;?>';
+    $.ajax({
+        url: '../action/get_task.php?id=' + taskId, //后台处理程序
+        type: 'GET',         //数据发送方式
+        dataType: 'json',     //接受数据格式
+        success: function (data) {
+            if (data && data.task) {
+                $("#taskDetail").append(
+                    $("#taskDetailTemplate").render({
+                            data: data.task
+                        },
+                        {
+                            dateFormat: function (m) {
+                                return moment(m).format('MM-DD HH:mm')
+                            }
+                        })
+                )
+            }
         }
-   });
+    });
 </script>
 

@@ -5,27 +5,27 @@ require_once '../common/common.php';
 require_once '../common/page.php';
 session_start();
 $sessionId = session_id();
-$phone=param('phone');
-$type=param('type');
+$phone = param('phone');
+$type = param('type');
 ?>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-   <div class="container">
-      <div class="navbar-nav text-center">
-         <a class="pull-left nav-title-left" href="../index.php">返回主页</a>
-            <span>我的<?php echo $type==1?'订单':'接单';?></span>
-      </div>
-   </div>
+    <div class="container">
+        <div class="navbar-nav text-center">
+            <a class="pull-left nav-title-left" href="../index.php">返回主页</a>
+            <span>我的<?php echo $type == 1 ? '订单' : '接单'; ?></span>
+        </div>
+    </div>
 </nav>
 
 <div style="margin:0; padding:0;">
-<div class="container" id="myTaskList">
-</div>
-<div class="text-center">
-<a type="button" id="loadingMore" class="btn btn-default" style="width:200px; height:25px; padding:2px 12px;" 
-	data-toggle="button" aria-pressed="false" autocomplete="off">
-  查看更多
-</a>
-</div>
+    <div class="container" id="myTaskList">
+    </div>
+    <div class="text-center">
+        <a type="button" id="loadingMore" class="btn btn-default" style="width:200px; height:25px; padding:2px 12px;"
+           data-toggle="button" aria-pressed="false" autocomplete="off">
+            查看更多
+        </a>
+    </div>
 </div>
 
 <?php
@@ -67,35 +67,36 @@ require_once '../common/footer.php';
              </div>
         </div>
    </div>
+
 </script>
 <script type="text/javascript">
-   var page = 1;
-   var phone = '<?php echo $phone;?>';
-   var type = '<?php echo $type;?>';
-   $("#loadingMore").click(function() {
-	$.ajax({
-            url:'../action/get_my_task.php?phone='+phone+"&type="+type+"&page="+page, //后台处理程序
-   	    type:'GET',         //数据发送方式
-  	    dataType:'json',     //接受数据格式
-     	    success:function(data) {
-         	 if (data && data.result && data.result.length > 0) {
-		      $.each(data.result, function(k, v) {
-			  v.type = type;
-		      });
-             	      $("#myTaskList").append(
-                    	  $("#taskTemplate").render(data.result)
-                      )
-                      $('.task-box').click(function() {
-                          ajaxGoToPage("task_detail_page.php?task="+$(this).attr('data')+'&type='+type);
-                      })
-		      page ++;
-		      if (data.result.length < 20)
-			  $("#loadingMore").hide();
-                 } else
-		      $("#loadingMore").hide();
+    var page = 1;
+    var phone = '<?php echo $phone;?>';
+    var type = '<?php echo $type;?>';
+    $("#loadingMore").click(function () {
+        $.ajax({
+            url: '../action/get_my_task.php?phone=' + phone + "&type=" + type + "&page=" + page, //后台处理程序
+            type: 'GET',         //数据发送方式
+            dataType: 'json',     //接受数据格式
+            success: function (data) {
+                if (data && data.result && data.result.length > 0) {
+                    $.each(data.result, function (k, v) {
+                        v.type = type;
+                    });
+                    $("#myTaskList").append(
+                        $("#taskTemplate").render(data.result)
+                    )
+                    $('.task-box').click(function () {
+                        ajaxGoToPage("task_detail_page.php?task=" + $(this).attr('data') + '&type=' + type);
+                    })
+                    page++;
+                    if (data.result.length < 20)
+                        $("#loadingMore").hide();
+                } else
+                    $("#loadingMore").hide();
             }
-  	});
-   }).click();
-   
+        });
+    }).click();
+
 </script>
 

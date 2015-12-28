@@ -9,13 +9,13 @@ $extra = $_SESSION['account_extra'];
 $phone = $extra['contact_phone'];
 ?>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
-      <div class="navbar-nav text-center">
-	 <a class="pull-left nav-title-left" href="javascript:history.go(-1)">返回</i></a>
-         <span>订单详情</span>
-         <a class="pull-right nav-title-right">&nbsp;</a>
-     </div>
-  </div>
+    <div class="container">
+        <div class="navbar-nav text-center">
+            <a class="pull-left nav-title-left" href="javascript:history.go(-1)">返回</i></a>
+            <span>订单详情</span>
+            <a class="pull-right nav-title-right">&nbsp;</a>
+        </div>
+    </div>
 </nav>
 <div class="container task-detail" id="taskDetail">
 </div>
@@ -130,55 +130,58 @@ require_once '../common/footer.php';
     {{/if}}
     <div class="row border-bottom" style="background-color: #f8f8f8; height: 20px;">
     </div>
+
 </script>
 
 <script type="text/javascript">
-   var taskId = '<?php echo $task;?>';
-   var phone = '<?php echo $phone;?>';
-   var type = '<?php echo $type;?>';
-   $.ajax({
-       url:'../action/get_task.php?id='+taskId, //后台处理程序
-       type:'GET',         //数据发送方式
-       dataType:'json',     //接受数据格式
-       success:function(data) {
-          if (data && data.task) {
-              data.task.type = type;
-              $("#taskDetail").append(
-                  $("#taskDetailTemplate").render({
-			data: data.task},
-			{dateFormat: function(m) {
-			  return moment(m).format('MM-DD HH:mm') 
-			}
-		  })
-               )
-	      $('.acceptTask').click(function() {
-		   $.ajax({
-	                url:'../action/accept_task.php?taskId='+data.task.id, //后台处理程序
-        	        //url:'../action/accept_task.php?taskId=2', //后台处理程序
-			type:'POST',         //数据发送方式
-            	        dataType:'json',     //接受数据格式
-            		success:function(res) {
-			   ajaxGoToPage("my_task_page.php?type=0&phone="+phone);
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-			   alert("mm")
-			}
-		   });
-	      });
-	      $('.cancelTask').click(function() {
-		   $.post('../action/close_task.php', {taskId: data.task.id}, function() {
-			ajaxGoToPage("publish_task_page.php?taskId="+data.task.id);	
-		   })
-  	      });
-	      $('.finishTask').click(function() {
-                   $.post('../action/finish_task.php', {taskId: data.task.id}, function() {
+    var taskId = '<?php echo $task;?>';
+    var phone = '<?php echo $phone;?>';
+    var type = '<?php echo $type;?>';
+    $.ajax({
+        url: '../action/get_task.php?id=' + taskId, //后台处理程序
+        type: 'GET',         //数据发送方式
+        dataType: 'json',     //接受数据格式
+        success: function (data) {
+            if (data && data.task) {
+                data.task.type = type;
+                $("#taskDetail").append(
+                    $("#taskDetailTemplate").render({
+                            data: data.task
+                        },
+                        {
+                            dateFormat: function (m) {
+                                return moment(m).format('MM-DD HH:mm')
+                            }
+                        })
+                )
+                $('.acceptTask').click(function () {
+                    $.ajax({
+                        url: '../action/accept_task.php?taskId=' + data.task.id, //后台处理程序
+                        //url:'../action/accept_task.php?taskId=2', //后台处理程序
+                        type: 'POST',         //数据发送方式
+                        dataType: 'json',     //接受数据格式
+                        success: function (res) {
+                            ajaxGoToPage("my_task_page.php?type=0&phone=" + phone);
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("mm")
+                        }
+                    });
+                });
+                $('.cancelTask').click(function () {
+                    $.post('../action/close_task.php', {taskId: data.task.id}, function () {
+                        ajaxGoToPage("publish_task_page.php?taskId=" + data.task.id);
+                    })
+                });
+                $('.finishTask').click(function () {
+                    $.post('../action/finish_task.php', {taskId: data.task.id}, function () {
                         //ajaxGoToPage("publish_task_page.php?taskId="+data.task.id);
-			location.reload();
-                   })
-              })
+                        location.reload();
+                    })
+                })
 
-          }
+            }
         }
-   });
+    });
 </script>
 
