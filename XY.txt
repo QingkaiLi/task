@@ -1,0 +1,36 @@
+DROP FUNCTION IF EXIST `GetDistance`;
+DELIMITER $$
+CREATE FUNCTION `GetDistance`
+( 
+GPSLng DECIMAL(12,6),
+GPSLat DECIMAL(12,6),
+Lng  DECIMAL(12,6),
+Lat DECIMAL(12,6)
+)
+RETURNS DECIMAL(12,4) NO SQL
+
+BEGIN
+   DECLARE result DECIMAL(12,4);
+   SET result=6371.004*ACOS(SIN(GPSLat/180*PI())*SIN(Lat/180*PI())+COS(GPSLat/180*PI())*COS(Lat/180*PI())*COS((GPSLng-Lng)/180*PI()));
+   RETURN result;
+END $$
+DELIMITER $$
+
+
+��ʽ���£���λ�ף�
+��һ�㾭γ�ȣ�lng1 lat1
+�ڶ��㾭γ�ȣ�lng2 lat2
+round(6378.138*2*asin(sqrt(pow(sin(
+(lat1*pi()/180-lat2*pi()/180)/2),2)+cos(lat1*pi()/180)*cos(lat2*pi()/180)*
+pow(sin( (lng1*pi()/180-lng2*pi()/180)/2),2)))*1000)
+
+
+
+���磺
+SELECT store_id,lng,lat,
+ROUND(6378.138*2*ASIN(SQRT(POW(SIN((22.299439*PI()/180-lat*PI()/180)/2),2)+COS(22.299439*PI()/180)*COS(lat*PI()/180)*POW(SIN((114.173881*PI()/180-lng*PI()/180)/2),2)))*1000)
+AS
+ juli
+FROM store_info having juli > 500
+ORDER BY juli DESC
+LIMIT 100
